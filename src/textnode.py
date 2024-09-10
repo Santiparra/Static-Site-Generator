@@ -1,8 +1,4 @@
 from leafnode import LeafNode
-from markdown_link_extractor import (
-    extract_markdown_links,
-    extract_markdown_images,
-)
 
 text_type_text = "text"
 text_type_bold = "bold"
@@ -43,52 +39,3 @@ def text_node_to_html_node(text_node):
   if text_node.text_type == text_type_image:
     return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
   raise ValueError(f"Invalid text type: {text_node.text_type}")
-
-
-def split_nodes_image(old_nodes):
-  new_nodes = []
-  for node in old_nodes:
-    if node.text_type is not text_type_text:
-      new_nodes.append(node)
-      continue
-    nodes_text = node.text  
-    images = extract_markdown_images(nodes_text)    
-    if len(images) is 0 :
-      new_nodes.append(node)
-      continue
-    for image in images:
-      splitted = nodes_text.split(f"![{image[0]}]({image[1]})", 1)
-      if len(splitted) is not 2:
-        raise Exception("Text provided contains invalid markdown syntax, markdown must contain open and closing delimiters")
-      if splitted[0] is not "":
-        new_nodes.append(TextNode(splitted[0], text_type_text))
-      else:  
-        new_nodes.append(TextNode(image[0], text_type_image, image[1]))
-        nodes_text = splitted[1]
-    if nodes_text is not "":
-      new_nodes.append(TextNode(nodes_text, text_type_text)) 
-  return new_nodes
-
-def split_nodes_link(old_nodes):
-  new_nodes = []
-  for node in old_nodes:
-    if node.text_type is not text_type_text:
-      new_nodes.append(node)
-      continue
-    nodes_text = node.text  
-    links = extract_markdown_links(nodes_text)    
-    if len(links) is 0 :
-      new_nodes.append(node)
-      continue
-    for link in links:
-      splitted = nodes_text.split(f"[{link[0]}]({link[1]})", 1)
-      if len(splitted) is not 2:
-        raise Exception("Text provided contains invalid markdown syntax, markdown must contain open and closing delimiters")
-      if splitted[0] is not "":
-        new_nodes.append(TextNode(splitted[0], text_type_text))
-      else:  
-        new_nodes.append(TextNode(link[0], text_type_link, link[1]))
-        nodes_text = splitted[1]
-    if nodes_text is not "":
-      new_nodes.append(TextNode(nodes_text, text_type_text)) 
-  return new_nodes  

@@ -2,7 +2,7 @@
 
 This is a static site generator, it takes Markdown and image files and converts them into readable html to serve in a static website. 
 
-To serve your own content just add your markdown file in content folder(ideally a proper structured tree of index.md files).
+To serve your own content just add your markdown file in content folder(ideally a proper structured tree of folders plus index.md files).
 
 ## Requirements:
 

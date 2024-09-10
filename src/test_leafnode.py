@@ -2,7 +2,7 @@ import unittest
 from htmlnode import HTMLNode
 from leafnode import LeafNode
 
-class TestHTMLNode(unittest.TestCase):
+class TestLeafNode(unittest.TestCase):
 
   def inheritance(self):
     leaf = LeafNode("p", "Hiya", {"class": "https://this.org"})
